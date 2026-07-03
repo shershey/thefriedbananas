@@ -277,7 +277,12 @@
           continue;
         }
       }
-      if (!b.held && (b.y > window.innerHeight + 100 || b.x < -160 || b.x > window.innerWidth + 160)) {
+      if (!b.held && b.y > window.innerHeight + 100) { // missed — fell past the catcher
+        b.el.remove(); bananas.splice(i, 1);
+        if (value > 0) catcherScale *= 0.95; // shrink 5% per miss
+        continue;
+      }
+      if (!b.held && (b.x < -160 || b.x > window.innerWidth + 160)) { // flung off the side
         b.el.remove();
         bananas.splice(i, 1);
       }
