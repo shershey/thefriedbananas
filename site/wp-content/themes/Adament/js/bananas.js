@@ -56,7 +56,10 @@
   function setValue(v) {
     var prev = value;
     value = Math.max(0, Math.min(1, v));
-    if (prev === 0 && value > 0 && typeof setScore === 'function') setScore(0); // fresh game
+    if (prev === 0 && value > 0) { // fresh game
+      if (typeof setScore === 'function') setScore(0);
+      if (typeof pickCatcher === 'function') pickCatcher();
+    }
     if (typeof syncMonkey === 'function') syncMonkey();
     var w = track.clientWidth;
     knob.style.left = (value * w) + 'px';
@@ -159,14 +162,34 @@
   // ── monkey catcher: move with ← / →, +1 per banana eaten ─
   var monkey = document.createElement('div');
   monkey.id = 'banana-monkey';
-  monkey.textContent = '🐵';
   document.body.appendChild(monkey);
   var scoreEl = document.createElement('div');
   scoreEl.id = 'banana-score';
   document.body.appendChild(scoreEl);
 
+  // Who's catching this round — randomized. Add Shawn once we have a
+  // transparent-background cutout of him.
+  var CATCHERS = [
+    { type: 'emoji', val: '🐵' },
+    { type: 'img',   val: '/wp-content/uploads/heads/josh.png' }
+  ];
+  function pickCatcher() {
+    var c = CATCHERS[Math.floor(Math.random() * CATCHERS.length)];
+    if (c.type === 'emoji') {
+      monkey.innerHTML = '';
+      monkey.textContent = c.val;
+      monkey.style.fontSize = '84px';
+    } else {
+      monkey.style.fontSize = '';
+      monkey.innerHTML = '<img src="' + c.val + '" alt="" '
+        + 'style="height:104px;width:auto;display:block;pointer-events:none;'
+        + 'filter:drop-shadow(0 2px 3px rgba(0,0,0,.4));">';
+    }
+  }
+  pickCatcher();
+
   var monkeyW = 88, monkeyX = window.innerWidth / 2, score = 0;
-  var leftHeld = false, rightHeld = false, chompUntil = 0;
+  var leftHeld = false, rightHeld = false, shiftHeld = false, chompUntil = 0;
 
   function syncMonkey() {
     if (!monkey) return;
@@ -179,13 +202,16 @@
   syncMonkey();
 
   window.addEventListener('keydown', function (e) {
+    if (e.key === 'Shift') shiftHeld = true;
     if (e.key === 'ArrowLeft')  { leftHeld = true;  if (value > 0) e.preventDefault(); }
     else if (e.key === 'ArrowRight') { rightHeld = true; if (value > 0) e.preventDefault(); }
   });
   window.addEventListener('keyup', function (e) {
+    if (e.key === 'Shift') shiftHeld = false;
     if (e.key === 'ArrowLeft') leftHeld = false;
     else if (e.key === 'ArrowRight') rightHeld = false;
   });
+  window.addEventListener('blur', function () { leftHeld = rightHeld = shiftHeld = false; });
 
   var last = null;
   function frame(t) {
@@ -193,9 +219,9 @@
     var dt = Math.min(0.05, (t - last) / 1000);
     last = t;
 
-    // move the monkey
+    // move the monkey (Shift = warp speed)
     if (value > 0) {
-      var mspeed = 1100;
+      var mspeed = shiftHeld ? 3600 : 1100;
       if (leftHeld)  monkeyX -= mspeed * dt;
       if (rightHeld) monkeyX += mspeed * dt;
       monkeyX = Math.max(monkeyW / 2, Math.min(window.innerWidth - monkeyW / 2, monkeyX));
