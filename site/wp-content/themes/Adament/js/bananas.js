@@ -21,7 +21,14 @@
     + '#banana-sky{position:fixed;inset:0;overflow:hidden;'
     +   'pointer-events:none;z-index:9998;}'
     + '#banana-sky .bn{position:absolute;left:0;top:0;will-change:transform;'
-    +   'pointer-events:auto;cursor:pointer;line-height:1;user-select:none;}';
+    +   'pointer-events:none;line-height:1;user-select:none;}'
+    + '#banana-monkey{position:fixed;left:50%;bottom:0;transform:translateX(-50%);'
+    +   'font-size:84px;line-height:1;z-index:9999;pointer-events:none;'
+    +   'user-select:none;display:none;transition:transform .08s ease-out;}'
+    + '#banana-score{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);'
+    +   'z-index:9999;pointer-events:none;user-select:none;display:none;white-space:nowrap;'
+    +   "font-family:'Source Sans 3',sans-serif;font-weight:700;font-size:20px;"
+    +   'color:#e6b455;text-shadow:0 1px 3px rgba(0,0,0,.6);}';
   var st = document.createElement('style');
   st.textContent = css;
   document.head.appendChild(st);
@@ -30,8 +37,7 @@
   var ctrl = document.createElement('div');
   ctrl.id = 'banana-ctrl';
   ctrl.innerHTML =
-      '<span class="bn-cap">🍌 rain</span>'
-    + '<div class="bn-track"><div class="bn-fill"></div>'
+      '<div class="bn-track"><div class="bn-fill"></div>'
     + '<span class="bn-knob">🍌</span></div>'
     + '<span class="bn-pct">0%</span>';
 
@@ -48,7 +54,10 @@
 
   var value = 0; // 0..1 — probability per second
   function setValue(v) {
+    var prev = value;
     value = Math.max(0, Math.min(1, v));
+    if (prev === 0 && value > 0 && typeof setScore === 'function') setScore(0); // fresh game
+    if (typeof syncMonkey === 'function') syncMonkey();
     var w = track.clientWidth;
     knob.style.left = (value * w) + 'px';
     fill.style.width = (value * w) + 'px';
@@ -91,38 +100,129 @@
       vx: (Math.random() - 0.5) * 30, vy: 12 + Math.random() * 18, // slow drop
       ang: Math.random() * 360, av: dir * (40 + Math.random() * 90) // always visibly spinning
     };
-    el.addEventListener('pointerdown', function (e) {
-      hit(b, e.clientX, e.clientY);
-      e.preventDefault();
-      e.stopPropagation();
-    });
+    b.held = false;
     bananas.push(b);
   }
 
-  function hit(b, clickX, clickY) {
-    var cx = b.x + b.size / 2, cy = b.y + b.size / 2;
-    var dx = cx - clickX, dy = cy - clickY; // push away from the click
-    var d = Math.hypot(dx, dy);
-    if (d < 3) { var a = Math.random() * Math.PI * 2; dx = Math.cos(a); dy = Math.sin(a); d = 1; }
-    var force = 540;
-    b.vx += (dx / d) * force;
-    b.vy += (dy / d) * force;
-    b.av += (Math.random() - 0.5) * 720; // extra spin from the whack
+  // ── grab / drag / throw ────────────────────────────────
+  var grabbed = null, offX = 0, offY = 0, lastX = 0, lastY = 0, lastT = 0;
+  function clamp(v, m) { return Math.max(-m, Math.min(m, v)); }
+
+  // find the nearest banana within a permissive radius of the pointer
+  function grabAt(px, py) {
+    var best = null, bestD = Infinity;
+    for (var i = 0; i < bananas.length; i++) {
+      var b = bananas[i];
+      var cx = b.x + b.size / 2, cy = b.y + b.size / 2;
+      var d = Math.hypot(cx - px, cy - py);
+      var reach = b.size / 2 + 45; // generous — easy to grab
+      if (d < reach && d < bestD) { bestD = d; best = b; }
+    }
+    return best;
   }
+
+  window.addEventListener('pointerdown', function (e) {
+    var b = grabAt(e.clientX, e.clientY);
+    if (!b) return;                 // not near a banana — let the page handle it
+    grabbed = b; b.held = true;
+    offX = e.clientX - b.x; offY = e.clientY - b.y;
+    lastX = e.clientX; lastY = e.clientY; lastT = e.timeStamp;
+    b.vx = b.vy = 0;
+    document.body.style.cursor = 'grabbing';
+    e.preventDefault();
+    e.stopPropagation();
+  }, true);
+
+  window.addEventListener('pointermove', function (e) {
+    if (!grabbed) return;
+    grabbed.x = e.clientX - offX;
+    grabbed.y = e.clientY - offY;
+    var dt = (e.timeStamp - lastT) / 1000;
+    if (dt > 0) {                    // track motion so a flick throws it
+      grabbed.vx = clamp((e.clientX - lastX) / dt, 2000);
+      grabbed.vy = clamp((e.clientY - lastY) / dt, 2000);
+    }
+    lastX = e.clientX; lastY = e.clientY; lastT = e.timeStamp;
+    e.preventDefault();
+  }, { passive: false });
+
+  function release() {
+    if (!grabbed) return;
+    grabbed.av += clamp(grabbed.vx, 1500) * 0.4; // extra spin from the throw
+    grabbed.held = false;
+    grabbed = null;
+    document.body.style.cursor = '';
+  }
+  window.addEventListener('pointerup', release);
+  window.addEventListener('pointercancel', release);
+
+  // ── monkey catcher: move with ← / →, +1 per banana eaten ─
+  var monkey = document.createElement('div');
+  monkey.id = 'banana-monkey';
+  monkey.textContent = '🐵';
+  document.body.appendChild(monkey);
+  var scoreEl = document.createElement('div');
+  scoreEl.id = 'banana-score';
+  document.body.appendChild(scoreEl);
+
+  var monkeyW = 88, monkeyX = window.innerWidth / 2, score = 0;
+  var leftHeld = false, rightHeld = false, chompUntil = 0;
+
+  function syncMonkey() {
+    if (!monkey) return;
+    var on = value > 0;
+    monkey.style.display = on ? 'block' : 'none';
+    scoreEl.style.display = on ? 'block' : 'none';
+  }
+  function setScore(n) { score = n; scoreEl.textContent = '🍌 × ' + score; }
+  setScore(0);
+  syncMonkey();
+
+  window.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft')  { leftHeld = true;  if (value > 0) e.preventDefault(); }
+    else if (e.key === 'ArrowRight') { rightHeld = true; if (value > 0) e.preventDefault(); }
+  });
+  window.addEventListener('keyup', function (e) {
+    if (e.key === 'ArrowLeft') leftHeld = false;
+    else if (e.key === 'ArrowRight') rightHeld = false;
+  });
 
   var last = null;
   function frame(t) {
     if (last === null) last = t;
     var dt = Math.min(0.05, (t - last) / 1000);
     last = t;
+
+    // move the monkey
+    if (value > 0) {
+      var mspeed = 640;
+      if (leftHeld)  monkeyX -= mspeed * dt;
+      if (rightHeld) monkeyX += mspeed * dt;
+      monkeyX = Math.max(monkeyW / 2, Math.min(window.innerWidth - monkeyW / 2, monkeyX));
+      monkey.style.left = monkeyX + 'px';
+      monkey.style.transform = 'translateX(-50%) scale(' + (t < chompUntil ? 1.25 : 1) + ')';
+    }
+
     for (var i = bananas.length - 1; i >= 0; i--) {
       var b = bananas[i];
-      b.vy += G * dt;
-      b.x += b.vx * dt;
-      b.y += b.vy * dt;
+      if (!b.held) {                 // held bananas follow the cursor, no gravity
+        b.vy += G * dt;
+        b.x += b.vx * dt;
+        b.y += b.vy * dt;
+      }
       b.ang += b.av * dt;
       b.el.style.transform = 'translate(' + b.x + 'px,' + b.y + 'px) rotate(' + b.ang + 'deg)';
-      if (b.y > window.innerHeight + 100 || b.x < -140 || b.x > window.innerWidth + 140) {
+
+      // eaten?
+      if (value > 0 && !b.held && b.vy > 0) {
+        var bcx = b.x + b.size / 2, bcy = b.y + b.size / 2;
+        if (bcy > window.innerHeight - 74 && Math.abs(bcx - monkeyX) < monkeyW * 0.55) {
+          b.el.remove(); bananas.splice(i, 1);
+          setScore(score + 1); chompUntil = t + 120;
+          continue;
+        }
+      }
+      if (!b.held && (b.y > window.innerHeight + 100 || b.x < -160 || b.x > window.innerWidth + 160)) {
         b.el.remove();
         bananas.splice(i, 1);
       }
