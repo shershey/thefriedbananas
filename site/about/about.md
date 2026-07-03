@@ -1,6 +1,4 @@
-## Very Brief Timeline of The Fried Bananas
-
-In summary, the Fried Bananas is mostly retired, but we resurrected this website so people could find our [music](/music/).
+Who are we and what are we these days? In summary, the Fried Bananas is mostly retired, but we resurrected this website so people could find our [music](/music/).
 
 * 2006 - A group of dancers got together to from a band to play Amanda's 30th birthday party.
 * 2006-2011 - The Fried Bananas played swing dance shows mostly in the Boston area.
