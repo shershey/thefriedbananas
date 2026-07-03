@@ -1,13 +1,15 @@
-Who are we and what are we these days? In summary, the Fried Bananas is mostly retired, but we resurrected this website so people could find our [music](/music/).
+## What is the Fried Bananas up to these days?
 
-* 2006 - A group of dancers got together to from a band to play Amanda's 30th birthday party.
+In summary, the Fried Bananas is mostly retired, but we resurrected this website so people could find our [music](/music/).
+
+* 2006 - Shawn assembled a group of dancers and musicians to from a band to play Amanda's 30th birthday party.
 * 2006-2011 - The Fried Bananas played swing dance shows mostly in the Boston area.
 * 2011 - The Fried Bananas assembled a group of jazz and blues musicians to play [BluesSHOUT!](http://bluesshout.com/)
-* 2011-2017 - We toured all over the US and the world playing blues dance shows as one of the most coveted blues bands.
-* 2017 - Shawn "retired" from teaching and performing and Josh fialkoff started performing under a different name.
+* 2011-2017 - We toured all over the US and the world playing blues dance shows as one of the most coveted blues dance bands.
+* 2017 - Shawn "retired" from teaching and performing and Josh started performing under a different name.
 * 2026 - Shawn decided to bring back this website so people could find our [music](/music/).
 
-## The origins
+## What was the band's origins?
 
 Many years ago in a land far away, a band of incredible talent was born. It just so happens that The Fried Bananas was born that year as well. The spot: Shawn's living room. The event: a 30th birthday celebration. The reason: to make beautiful music together. Since then, The Fried Bananas have traveled the country with a single mission — to swing harder than a 5-year-old at recess and, more importantly, to make people dance!
 
