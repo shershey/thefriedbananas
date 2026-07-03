@@ -66,3 +66,15 @@ body,
 
 /* #bottom is an empty spacer the theme paints charcoal — blend it into the page */
 #bottom { background: transparent; }
+
+/* ── Sticky footer ────────────────────────────────────────────
+   Short pages otherwise leave the footer floating mid-screen with
+   brown below it. Make the content area grow so the footer always
+   sits at the bottom of the viewport. Handles both page layouts:
+   most pages wrap content in #page; the Music page uses .music-wrap. */
+html { height: 100%; }
+body { min-height: 100vh; display: flex; flex-direction: column; }
+body > #page { display: flex; flex-direction: column; flex: 1 0 auto; }
+#content { flex: 1 0 auto; }
+body > .music-wrap { flex: 1 0 auto; }
+#colophon.site-footer { flex-shrink: 0; }
