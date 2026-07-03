@@ -42,4 +42,4 @@ These days we aren't actively booking shows but sometimes Shawn or Josh play a s
 
 ## How do I learn how to dance like Shawn Hershey?
 
-Check out [shawnhershey.com](shawnhershey.com) for more info on Shawn's dancing or go over to the [contact us](/contact/) page and reach out to Shawn on social media.
+Check out [shawnhershey.com](https://shawnhershey.com) for more info on Shawn's dancing or go over to the [contact us](/contact/) page and reach out to Shawn on social media.
