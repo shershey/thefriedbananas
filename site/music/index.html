@@ -56,6 +56,8 @@ img.emoji {
 
 
 
+
+
 <style>
   body { background: #fff; }
   .music-wrap { max-width: 900px; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
@@ -96,7 +98,7 @@ img.emoji {
 	</header>
 <div class="music-wrap">
   <h1>Music</h1>
-  <p class="music-intro">Two live albums, recorded for dancers back in 2013&ndash;2014. They're old now, so we're giving them away &mdash; stream them here, or head to Bandcamp to download for free (name your price).</p>
+  <div class="music-intro" id="intro"></div>
   <div class="albums">
     
     <div class="album">
@@ -124,5 +126,19 @@ img.emoji {
 			</div><!-- .site-info -->
 		</div></div>
 	</footer>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+  // Editable intro text lives in music/intro.md — edit that file, push, done.
+  fetch('intro.md').then(function (r) { return r.text(); })
+    .then(function (t) {
+      var el = document.getElementById('intro');
+      el.innerHTML = marked.parse(t);
+      el.querySelectorAll('a').forEach(function (a) {
+        a.setAttribute('target', '_blank');
+        a.setAttribute('rel', 'noopener');
+      });
+    })
+    .catch(function () {});
+</script>
 </body>
 </html>

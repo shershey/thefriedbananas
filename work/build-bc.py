@@ -59,8 +59,15 @@ body = f"""<body class="page-template-default page group-blog">
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
   // Editable intro text lives in music/intro.md — edit that file, push, done.
-  fetch('intro.md').then(function (r) { return r.text(); })
-    .then(function (t) {{ document.getElementById('intro').innerHTML = marked.parse(t); }})
+  fetch('intro.md').then(function (r) {{ return r.text(); }})
+    .then(function (t) {{
+      var el = document.getElementById('intro');
+      el.innerHTML = marked.parse(t);
+      el.querySelectorAll('a').forEach(function (a) {{
+        a.setAttribute('target', '_blank');
+        a.setAttribute('rel', 'noopener');
+      }});
+    }})
     .catch(function () {{}});
 </script>
 </body>"""
