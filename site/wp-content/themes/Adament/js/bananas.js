@@ -195,7 +195,7 @@
 
     // move the monkey
     if (value > 0) {
-      var mspeed = 640;
+      var mspeed = 1100;
       if (leftHeld)  monkeyX -= mspeed * dt;
       if (rightHeld) monkeyX += mspeed * dt;
       monkeyX = Math.max(monkeyW / 2, Math.min(window.innerWidth - monkeyW / 2, monkeyX));
