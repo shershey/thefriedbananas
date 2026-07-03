@@ -21,7 +21,7 @@
     + '#banana-ctrl .bn-pct{font-size:12px;width:32px;text-align:right;'
     +   'font-variant-numeric:tabular-nums;opacity:.85;}'
     + '@media (max-width:767px){#banana-ctrl{position:static;transform:none;'
-    +   'margin:10px auto 2px;opacity:.72;}}'
+    +   'justify-content:center;margin:10px auto 2px;opacity:.72;}}'
     + '#banana-sky{position:fixed;inset:0;overflow:hidden;'
     +   'pointer-events:none;z-index:9998;}'
     + '#banana-sky .bn{position:absolute;left:0;top:0;will-change:transform;'
