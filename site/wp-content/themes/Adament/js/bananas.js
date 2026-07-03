@@ -27,8 +27,8 @@
     + '#banana-sky .bn{position:absolute;left:0;top:0;will-change:transform;'
     +   'pointer-events:none;line-height:1;user-select:none;}'
     + '#banana-monkey{position:fixed;left:50%;bottom:0;transform:translateX(-50%);'
-    +   'font-size:84px;line-height:1;z-index:9999;pointer-events:none;'
-    +   'user-select:none;display:none;transition:transform .08s ease-out;}'
+    +   'transform-origin:bottom center;font-size:84px;line-height:1;z-index:9999;'
+    +   'pointer-events:none;user-select:none;display:none;transition:transform .08s ease-out;}'
     + '#banana-score{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);'
     +   'z-index:9999;pointer-events:none;user-select:none;display:none;white-space:nowrap;'
     +   "font-family:'Source Sans 3',sans-serif;font-weight:700;font-size:20px;"
@@ -61,7 +61,7 @@
     var prev = value;
     value = Math.max(0, Math.min(1, v));
     if (prev === 0 && value > 0) { // fresh game
-      score = 0; total = 0;
+      score = 0; total = 0; catcherScale = 1;
       if (typeof renderScore === 'function') renderScore();
       if (typeof pickCatcher === 'function') pickCatcher();
     }
@@ -210,6 +210,7 @@
   pickCatcher();
 
   var monkeyW = 88, monkeyX = window.innerWidth / 2, score = 0, total = 0;
+  var catcherScale = 1; // grows as the head eats bananas
   var leftHeld = false, rightHeld = false, shiftHeld = false, chompUntil = 0;
   var monkeyTouch = false;
   var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
@@ -249,9 +250,10 @@
       var mspeed = shiftHeld ? 3600 : 1100;
       if (leftHeld)  monkeyX -= mspeed * dt;
       if (rightHeld) monkeyX += mspeed * dt;
-      monkeyX = Math.max(monkeyW / 2, Math.min(window.innerWidth - monkeyW / 2, monkeyX));
+      var hw = (monkeyW / 2) * catcherScale;
+      monkeyX = Math.max(hw, Math.min(window.innerWidth - hw, monkeyX));
       monkey.style.left = monkeyX + 'px';
-      monkey.style.transform = 'translateX(-50%) scale(' + (t < chompUntil ? 1.25 : 1) + ')';
+      monkey.style.transform = 'translateX(-50%) scale(' + (catcherScale * (t < chompUntil ? 1.12 : 1)) + ')';
     }
 
     for (var i = bananas.length - 1; i >= 0; i--) {
@@ -267,9 +269,11 @@
       // eaten?
       if (value > 0 && !b.held && b.vy > 0) {
         var bcx = b.x + b.size / 2, bcy = b.y + b.size / 2;
-        if (bcy > window.innerHeight - 74 && Math.abs(bcx - monkeyX) < monkeyW * 0.55) {
+        if (bcy > window.innerHeight - 104 * catcherScale * 0.71 &&
+            Math.abs(bcx - monkeyX) < monkeyW * 0.55 * catcherScale) {
           b.el.remove(); bananas.splice(i, 1);
           score++; renderScore(); chompUntil = t + 120;
+          catcherScale *= 1.02; // grow 2% per banana eaten
           continue;
         }
       }
