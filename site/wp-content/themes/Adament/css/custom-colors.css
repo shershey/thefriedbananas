@@ -63,3 +63,6 @@ body,
 
 /* the theme paints #content white — let the brown page show through */
 #content, .site-content, .hentry, article.page { background: transparent; }
+
+/* #bottom is an empty spacer the theme paints charcoal — blend it into the page */
+#bottom { background: transparent; }
