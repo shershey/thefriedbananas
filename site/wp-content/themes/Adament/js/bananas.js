@@ -170,11 +170,10 @@
   scoreEl.id = 'banana-score';
   document.body.appendChild(scoreEl);
 
-  // Who's catching this round — randomized. Add Shawn once we have a
-  // transparent-background cutout of him.
+  // Who's catching this round — randomly Josh or Shawn.
   var CATCHERS = [
-    { type: 'emoji', val: '🐵' },
-    { type: 'img',   val: '/wp-content/uploads/heads/josh.png' }
+    { type: 'img', val: '/wp-content/uploads/heads/josh.png' },
+    { type: 'img', val: '/wp-content/uploads/heads/shawn.png' }
   ];
   function pickCatcher() {
     var c = CATCHERS[Math.floor(Math.random() * CATCHERS.length)];
