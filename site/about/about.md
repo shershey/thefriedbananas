@@ -2,7 +2,7 @@
 
 In summary, the Fried Bananas is mostly retired, but we resurrected this website so people could find our [music](/music/).
 
-* 2006 - Shawn assembled a group of dancers and musicians to from a band to play Amanda's 30th birthday party.
+* 2006 - Shawn assembled a group of dancers and musicians (which included Josh) to from a band to play Amanda's 30th birthday party.
 * 2006-2011 - The Fried Bananas played swing dance shows mostly in the Boston area.
 * 2011 - The Fried Bananas assembled a group of jazz and blues musicians to play [BluesSHOUT!](http://bluesshout.com/)
 * 2011-2017 - We toured all over the US and the world playing blues dance shows as one of the most coveted blues dance bands.
