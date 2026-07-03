@@ -1,7 +1,7 @@
 ## Get in touch
 
-**Shawn Hershey** — [shershey@gmail.com](mailto:shershey@gmail.com)
+**Shawn Hershey** — Can be contacted on [Facebook](https://www.facebook.com/shawn.hershey) or [Instagram](https://www.instagram.com/shawn.hershey/)
 
-**Josh ...** — add Josh's contact here
+**Josh Fialkoff** — Can be contacted on [Facebook](https://www.facebook.com/joshua.fialkoff) or [Instagram](https://www.instagram.com/joshuafialkoff/)
 
-You can also find us on [Facebook](https://www.facebook.com/thefriedbananas).
+
