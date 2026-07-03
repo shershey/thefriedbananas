@@ -4,9 +4,9 @@
 (function () {
   // ── styles ─────────────────────────────────────────────
   var css = ''
-    + '#banana-ctrl{display:inline-flex;align-items:center;gap:8px;'
+    + '#banana-ctrl{display:flex;align-items:center;justify-content:center;gap:8px;'
     +   "font-family:'Source Sans 3',sans-serif;color:#4a3a20;user-select:none;"
-    +   'float:right;clear:both;margin:6px 2px 2px;}'
+    +   'clear:both;margin:10px 0 0;}'
     + '#banana-ctrl .bn-cap{font-size:13px;white-space:nowrap;}'
     + '#banana-ctrl .bn-track{position:relative;width:120px;height:6px;'
     +   'border-radius:3px;background:#b89b52;cursor:pointer;}'
@@ -35,8 +35,10 @@
     + '<span class="bn-knob">🍌</span></div>'
     + '<span class="bn-pct">0%</span>';
 
-  var nav = document.querySelector('#site-navigation');
-  var host = (nav && nav.parentNode) || document.querySelector('#masthead') || document.body;
+  var host = document.querySelector('#colophon .site-info')
+          || document.querySelector('#colophon')
+          || document.querySelector('.site-footer')
+          || document.body;
   host.appendChild(ctrl);
 
   var track = ctrl.querySelector('.bn-track');
@@ -73,20 +75,21 @@
   document.body.appendChild(sky);
 
   var bananas = [];
-  var G = 900; // gravity, px/s^2
+  var G = 220; // gravity, px/s^2 — gentle, slow fall
 
   function spawn() {
     var el = document.createElement('div');
     el.className = 'bn';
     el.textContent = '🍌';
-    var size = 28 + Math.random() * 18;
+    var size = 60 + Math.random() * 55; // big bananas
     el.style.fontSize = size + 'px';
     sky.appendChild(el);
+    var dir = Math.random() < 0.5 ? -1 : 1;
     var b = {
       el: el, size: size,
-      x: Math.random() * window.innerWidth, y: -50,
-      vx: (Math.random() - 0.5) * 40, vy: 20 + Math.random() * 40,
-      ang: Math.random() * 360, av: (Math.random() - 0.5) * 120 // gentle spin
+      x: Math.random() * window.innerWidth, y: -size - 20,
+      vx: (Math.random() - 0.5) * 30, vy: 12 + Math.random() * 18, // slow drop
+      ang: Math.random() * 360, av: dir * (40 + Math.random() * 90) // always visibly spinning
     };
     el.addEventListener('pointerdown', function (e) {
       hit(b, e.clientX, e.clientY);
