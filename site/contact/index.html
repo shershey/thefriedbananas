@@ -76,7 +76,11 @@
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
   var renderer = new marked.Renderer();
-  renderer.link = function(href, title, text) {
+  renderer.link = function(token) {
+    var href = token.href || token;
+    var title = token.title;
+    var text = token.text;
+    if (typeof token === 'string') { href = arguments[0]; title = arguments[1]; text = arguments[2]; }
     return '<a href="' + href + '" target="_blank" rel="noopener"' + (title ? ' title="' + title + '"' : '') + '>' + text + '</a>';
   };
   fetch('contact.md').then(function(r){return r.text();})
