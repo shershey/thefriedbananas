@@ -61,11 +61,5 @@ body,
   color: #f3d489;
 }
 
-/* footer + the little strip above it go dark to match the page */
-#bottom { background: #241d17; }
-.site-footer, .home .site-footer { background: #241d17; color: #cdbfa3; }
-.site-footer a:link, .site-footer a:visited { color: #e6b455; }
-.fcred, .fcredr { color: #cdbfa3; }
-
 /* the theme paints #content white — let the brown page show through */
 #content, .site-content, .hentry, article.page { background: transparent; }
