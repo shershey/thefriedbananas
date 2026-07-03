@@ -78,3 +78,17 @@ body > #page { display: flex; flex-direction: column; flex: 1 0 auto; }
 #content { flex: 1 0 auto; }
 body > .music-wrap { flex: 1 0 auto; }
 #colophon.site-footer { flex-shrink: 0; }
+
+/* ── Footer on small screens ──────────────────────────────────
+   The two credit columns stack and go lopsided on phones. Center
+   them and give the (now in-flow) banana slider room below. */
+@media (max-width: 767px) {
+  #colophon .site-info { text-align: center; }
+  #colophon .fcred,
+  #colophon .fcredr {
+    float: none;
+    width: 100%;
+    text-align: center;
+    margin: 3px 0;
+  }
+}
