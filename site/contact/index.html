@@ -75,8 +75,12 @@
 <script>var elLogo=document.getElementById("ft_logo");if(elLogo){elLogo.style.maxHeight=(elLogo.getAttribute("relHeight")||"100")+"px";elLogo.style.maxWidth=(elLogo.getAttribute("relWidth")||"100")+"px";}</script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
+  var renderer = new marked.Renderer();
+  renderer.link = function(href, title, text) {
+    return '<a href="' + href + '" target="_blank" rel="noopener"' + (title ? ' title="' + title + '"' : '') + '>' + text + '</a>';
+  };
   fetch('contact.md').then(function(r){return r.text();})
-    .then(function(t){document.getElementById('contact-content').innerHTML=marked.parse(t);})
+    .then(function(t){document.getElementById('contact-content').innerHTML=marked.parse(t,{renderer:renderer});})
     .catch(function(){});
 </script>
 </body>
