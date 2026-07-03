@@ -69,6 +69,7 @@ body = f"""<body class="page-template-default page group-blog">
     }})
     .catch(function () {{}});
 </script>
+<script src="/wp-content/themes/Adament/js/bananas.js?v=1"></script>
 </body>"""
 
 out = f"<!DOCTYPE html>\n<html lang=\"en\">\n{head.replace('</head>', STYLE + '</head>')}\n{body}\n</html>\n"
