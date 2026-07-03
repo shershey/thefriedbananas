@@ -41,7 +41,7 @@ def album_html(title, yr, aid, url, dropbox):
     <div class="album">
       <h2>{html.escape(title)}</h2>
       <div class="yr">The Fried Bananas · {html.escape(yr)}</div>
-      <iframe src="https://bandcamp.com/EmbeddedPlayer/album={aid}/size=large/bgcol=ffffff/linkcol=b8873b/tracklist=true/transparent=true/" seamless><a href="{url}">{html.escape(title)}</a></iframe>
+      <iframe src="https://bandcamp.com/EmbeddedPlayer/album={aid}/size=large/bgcol=f2e8cf/linkcol=b8873b/tracklist=true/transparent=true/" seamless><a href="{url}">{html.escape(title)}</a></iframe>
       <a class="dropbox-dl" href="{dropbox}" target="_blank" rel="noopener">Or download from Dropbox &#8595;</a>
     </div>"""
 
