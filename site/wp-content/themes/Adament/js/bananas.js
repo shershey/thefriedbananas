@@ -57,7 +57,8 @@
     var prev = value;
     value = Math.max(0, Math.min(1, v));
     if (prev === 0 && value > 0) { // fresh game
-      if (typeof setScore === 'function') setScore(0);
+      score = 0; total = 0;
+      if (typeof renderScore === 'function') renderScore();
       if (typeof pickCatcher === 'function') pickCatcher();
     }
     if (typeof syncMonkey === 'function') syncMonkey();
@@ -105,6 +106,8 @@
     };
     b.held = false;
     bananas.push(b);
+    total++;
+    if (typeof renderScore === 'function') renderScore();
   }
 
   // ── grab / drag / throw ────────────────────────────────
@@ -188,7 +191,7 @@
   }
   pickCatcher();
 
-  var monkeyW = 88, monkeyX = window.innerWidth / 2, score = 0;
+  var monkeyW = 88, monkeyX = window.innerWidth / 2, score = 0, total = 0;
   var leftHeld = false, rightHeld = false, shiftHeld = false, chompUntil = 0;
 
   function syncMonkey() {
@@ -197,8 +200,8 @@
     monkey.style.display = on ? 'block' : 'none';
     scoreEl.style.display = on ? 'block' : 'none';
   }
-  function setScore(n) { score = n; scoreEl.textContent = '🍌 × ' + score; }
-  setScore(0);
+  function renderScore() { scoreEl.textContent = '🍌 ' + score + ' / ' + total; }
+  renderScore();
   syncMonkey();
 
   window.addEventListener('keydown', function (e) {
@@ -244,7 +247,7 @@
         var bcx = b.x + b.size / 2, bcy = b.y + b.size / 2;
         if (bcy > window.innerHeight - 74 && Math.abs(bcx - monkeyX) < monkeyW * 0.55) {
           b.el.remove(); bananas.splice(i, 1);
-          setScore(score + 1); chompUntil = t + 120;
+          score++; renderScore(); chompUntil = t + 120;
           continue;
         }
       }
