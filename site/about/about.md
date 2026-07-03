@@ -1,6 +1,13 @@
-## What and Who is the Fried Bananas These Days?
+## Very Brief Timeline of The Fried Bananas
 
-TODO
+In summary, the Fried Bananas is mostly retired, but we resurrected this website so people could find our [music](/music/).
+
+* 2006 - A group of dancers got together to from a band to play Amanda's 30th birthday party.
+* 2006-2011 - The Fried Bananas played swing dance shows mostly in the Boston area.
+* 2011 - The Fried Bananas assembled a group of jazz and blues musicians to play [BluesSHOUT!](http://bluesshout.com/)
+* 2011-2017 - We toured all over the US and the world playing blues dance shows as one of the most coveted blues bands.
+* 2017 - Shawn "retired" from teaching and performing and Josh fialkoff started performing under a different name.
+* 2026 - Shawn decided to bring back this website so people could find our [music](/music/).
 
 ## The origins
 
