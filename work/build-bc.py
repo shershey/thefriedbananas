@@ -23,17 +23,16 @@ ALBUMS = [
 
 STYLE = """
 <style>
-  body { background: #fff; }
   .music-wrap { max-width: 900px; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
   .music-wrap h1 { font-size: 2rem; margin-bottom: .25rem; }
-  .music-intro { color: #666; margin-bottom: 2rem; max-width: 640px; }
+  .music-intro { color: #cdbfa3; margin-bottom: 2rem; max-width: 640px; }
   .albums { display: flex; flex-wrap: wrap; gap: 2rem; }
   .album { flex: 1 1 320px; max-width: 400px; }
   .album h2 { font-size: 1.15rem; margin: 0 0 .15rem; }
-  .album .yr { color: #999; font-size: .85rem; margin-bottom: .6rem; }
+  .album .yr { color: #b7a889; font-size: .85rem; margin-bottom: .6rem; }
   .album iframe { border: 0; width: 100%; height: 620px; }
-  .album .dropbox-dl { display: inline-block; margin-top: .5rem; font-size: .85rem; color: #666; }
-  .album .dropbox-dl:hover { color: #025a7a; }
+  .album .dropbox-dl { display: inline-block; margin-top: .5rem; font-size: .85rem; color: #e6b455; }
+  .album .dropbox-dl:hover { color: #f3d489; }
 </style>
 """
 

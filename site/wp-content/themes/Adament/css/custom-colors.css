@@ -29,3 +29,43 @@ a:active {
 	background: #454545;
 }
 
+
+/* ══════════════════════════════════════════════════════════
+   Site-wide vintage DARK theme — brown page, cream text.
+   Header bar stays tan (the logo + nav are dark and read on it).
+   ══════════════════════════════════════════════════════════ */
+html, body { background: #2b241d; }
+
+body,
+#content, .site-content,
+.entry-content, .site-main, .music-wrap,
+.entry-content p, .entry-content li {
+  color: #efe6d3;
+}
+
+/* headings & page titles */
+.entry-header h1.entry-title,
+.entry-content h1, .entry-content h2, .entry-content h3,
+.entry-content h4, .music-wrap h1, .album h2 {
+  color: #f4ecdb;
+}
+
+/* content links → warm gold (nav links keep their own dark color) */
+.entry-content a:link, .entry-content a:visited,
+.music-wrap a:link, .music-wrap a:visited,
+#intro a, #about-content a, #contact-content a {
+  color: #e6b455;
+}
+.entry-content a:hover, .music-wrap a:hover,
+#intro a:hover, #about-content a:hover, #contact-content a:hover {
+  color: #f3d489;
+}
+
+/* footer + the little strip above it go dark to match the page */
+#bottom { background: #241d17; }
+.site-footer, .home .site-footer { background: #241d17; color: #cdbfa3; }
+.site-footer a:link, .site-footer a:visited { color: #e6b455; }
+.fcred, .fcredr { color: #cdbfa3; }
+
+/* the theme paints #content white — let the brown page show through */
+#content, .site-content, .hentry, article.page { background: transparent; }
