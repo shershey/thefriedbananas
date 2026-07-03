@@ -4,3 +4,7 @@
 work/*-mp3/
 work/*-wav/
 work/*.zip
+
+# Python cache
+__pycache__/
+*.pyc
