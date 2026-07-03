@@ -1,1 +1,6 @@
 .DS_Store
+
+# Audio source files — tracks live on Bandcamp/Dropbox, not in this repo
+work/*-mp3/
+work/*-wav/
+work/*.zip

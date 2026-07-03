@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -47,12 +47,31 @@ img.emoji {
 <link rel="alternate" type="application/json+oembed" href="/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fthefriedbananas.com%2Fmusic%2F" />
 <link rel="alternate" type="text/xml+oembed" href="/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fthefriedbananas.com%2Fmusic%2F&#038;format=xml" />
 		<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
-		</head>
+		
 
-<body class="page-template-default page page-id-27 group-blog">
-<div id="page" class="hfeed site">
-	
-	<header id="masthead" class="site-header" role="banner">
+
+
+
+
+
+
+
+<style>
+  body { background: #fff; }
+  .music-wrap { max-width: 900px; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
+  .music-wrap h1 { font-size: 2rem; margin-bottom: .25rem; }
+  .music-intro { color: #666; margin-bottom: 2rem; max-width: 640px; }
+  .albums { display: flex; flex-wrap: wrap; gap: 2rem; }
+  .album { flex: 1 1 320px; max-width: 400px; }
+  .album h2 { font-size: 1.15rem; margin: 0 0 .15rem; }
+  .album .yr { color: #999; font-size: .85rem; margin-bottom: .6rem; }
+  .album iframe { border: 0; width: 100%; height: 620px; }
+  .album .dropbox-dl { display: inline-block; margin-top: .5rem; font-size: .85rem; color: #666; }
+  .album .dropbox-dl:hover { color: #025a7a; }
+</style>
+</head>
+<body class="page-template-default page group-blog">
+<header id="masthead" class="site-header" role="banner">
 		<div class="container"> <div class="row"> 
 			<div class="site-branding col-sm-4">
 
@@ -74,39 +93,27 @@ img.emoji {
 
 			</div>
 		</div></div>
-	</header><!-- #masthead -->
-
-	<div id="content" class="site-content"><div class="container"> <div class="row"> 
-	<div id="primary" class="content-area col-md-12">
-		<main id="main" class="site-main" role="main">
-
-			
-				
-<article id="post-27" class="post-27 page type-page status-publish hentry">
-	<header class="entry-header">
-		<h1 class="entry-title">Music</h1>
-	</header><!-- .entry-header -->
-
-	<div class="entry-content">
-		<p><iframe name="full" style="width:100%;height:520px;border:0px;" src="http://widget.cdbaby.com/ffdb0a99-3ebf-468f-b29e-1458acc67312/full/light/opaque"></iframe></p>
-<p><iframe name="full" style="width:100%;height:520px;border:0px;" src="http://widget.cdbaby.com/d88ed848-772c-4646-9bc4-210aec1f896c/full/light/opaque"></iframe></p>
-			</div><!-- .entry-content -->
-	</article><!-- #post-## -->
-
-				
-			
-		</main><!-- #main -->
-	</div><!-- #primary -->
-
-</div></div>
-
-	</div><!-- #content -->
-			<div id="bottom">
-			<div class="container"> <div class="row">
-				  
-							</div></div>
-		</div>
-		<footer id="colophon" class="site-footer" role="contentinfo">
+	</header>
+<div class="music-wrap">
+  <h1>Music</h1>
+  <p class="music-intro">Two live albums, recorded for dancers back in 2013&ndash;2014. They're old now, so we're giving them away &mdash; stream them here, or head to Bandcamp to download for free (name your price).</p>
+  <div class="albums">
+    
+    <div class="album">
+      <h2>Live at Montreal Dance Fest &amp; Sweet Molasses Blues</h2>
+      <div class="yr">The Fried Bananas · Released 2014</div>
+      <iframe src="https://bandcamp.com/EmbeddedPlayer/album=3311730543/size=large/bgcol=ffffff/linkcol=b8873b/tracklist=true/transparent=true/" seamless><a href="https://shawnhershey.bandcamp.com/album/the-fried-bananas-live-at-montreal-dance-fest-sweet-molasses-blues">Live at Montreal Dance Fest &amp; Sweet Molasses Blues</a></iframe>
+      <a class="dropbox-dl" href="https://www.dropbox.com/scl/fo/7pn1cdf2xy3hhjdy2rk8h/ACstqxNgHt1EwIk94pTbcr4?rlkey=63myusk954cpvy6v0s8hcj5oy&dl=0" target="_blank" rel="noopener">Or download from Dropbox &#8595;</a>
+    </div>
+    <div class="album">
+      <h2>Live at the 2014 Albany Lindy and Blues Exchange</h2>
+      <div class="yr">The Fried Bananas · Released 2015</div>
+      <iframe src="https://bandcamp.com/EmbeddedPlayer/album=234184643/size=large/bgcol=ffffff/linkcol=b8873b/tracklist=true/transparent=true/" seamless><a href="https://shawnhershey.bandcamp.com/album/the-fried-bananas">Live at the 2014 Albany Lindy and Blues Exchange</a></iframe>
+      <a class="dropbox-dl" href="https://www.dropbox.com/scl/fo/m20060wwxit4k8gv4nmtv/AJ_I1dL8UglEc3npCVCwLZk?rlkey=yvqjr5cv61gpddwzef28zued0&dl=0" target="_blank" rel="noopener">Or download from Dropbox &#8595;</a>
+    </div>
+  </div>
+</div>
+<footer id="colophon" class="site-footer" role="contentinfo">
 		<div class="container"><div class="row"> 
 			<div class="site-info clearfix">
 				<div class="fcred  col-md-6">
@@ -116,18 +123,6 @@ img.emoji {
 				</div>	
 			</div><!-- .site-info -->
 		</div></div>
-	</footer><!-- #colophon -->
-</div><!-- #page -->
-
-<script type="text/javascript">var elLogo = document.getElementById("ft_logo"); if (elLogo) {elLogo.style.maxHeight = elLogo.getAttribute("relHeight") ? elLogo.getAttribute("relHeight") + "px" : "100px";} if (elLogo) {elLogo.style.maxWidth = elLogo.getAttribute("relWidth") ? elLogo.getAttribute("relWidth") + "px" : "100px";}</script><script type='text/javascript' src='/wp-content/themes/Adament/bootstrap/bootstrap.min.js?ver=20120206'></script>
-<script type='text/javascript' src='/wp-content/themes/Adament/js/jquery.superslides.js?ver=20120206'></script>
-<script type='text/javascript' src='/wp-content/themes/Adament/js/jquery.slides.min.js?ver=20120206'></script>
-<script type='text/javascript' src='/wp-content/themes/Adament/js/jquery.prettyPhoto.js?ver=20120206'></script>
-<script type='text/javascript' src='/wp-content/themes/Adament/js/navigation.js?ver=20120206'></script>
-<script type='text/javascript' src='/wp-content/themes/Adament/js/skip-link-focus-fix.js?ver=20130115'></script>
-<script type='text/javascript' src='/wp-content/themes/Adament/js/custom.js?ver=20120206'></script>
-<script type='text/javascript' src='/wp-includes/js/comment-reply.min.js?ver=4.8.17'></script>
-<script type='text/javascript' src='/wp-includes/js/wp-embed.min.js?ver=4.8.17'></script>
-
+	</footer>
 </body>
 </html>
