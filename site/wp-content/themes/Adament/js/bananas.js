@@ -127,32 +127,47 @@
     return best;
   }
 
+  function insideSlider(e) {
+    return e.target && e.target.closest && e.target.closest('#banana-ctrl');
+  }
+
   window.addEventListener('pointerdown', function (e) {
     var b = grabAt(e.clientX, e.clientY);
-    if (!b) return;                 // not near a banana — let the page handle it
-    grabbed = b; b.held = true;
-    offX = e.clientX - b.x; offY = e.clientY - b.y;
-    lastX = e.clientX; lastY = e.clientY; lastT = e.timeStamp;
-    b.vx = b.vy = 0;
-    document.body.style.cursor = 'grabbing';
-    e.preventDefault();
-    e.stopPropagation();
+    if (b) {                        // grab a banana
+      grabbed = b; b.held = true;
+      offX = e.clientX - b.x; offY = e.clientY - b.y;
+      lastX = e.clientX; lastY = e.clientY; lastT = e.timeStamp;
+      b.vx = b.vy = 0;
+      document.body.style.cursor = 'grabbing';
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+    // touch: drag anywhere (except the slider) to slide the catcher
+    if (e.pointerType === 'touch' && value > 0 && !insideSlider(e)) {
+      monkeyTouch = true;
+      monkeyX = e.clientX;
+    }
   }, true);
 
   window.addEventListener('pointermove', function (e) {
-    if (!grabbed) return;
-    grabbed.x = e.clientX - offX;
-    grabbed.y = e.clientY - offY;
-    var dt = (e.timeStamp - lastT) / 1000;
-    if (dt > 0) {                    // track motion so a flick throws it
-      grabbed.vx = clamp((e.clientX - lastX) / dt, 2000);
-      grabbed.vy = clamp((e.clientY - lastY) / dt, 2000);
+    if (grabbed) {
+      grabbed.x = e.clientX - offX;
+      grabbed.y = e.clientY - offY;
+      var dt = (e.timeStamp - lastT) / 1000;
+      if (dt > 0) {                  // track motion so a flick throws it
+        grabbed.vx = clamp((e.clientX - lastX) / dt, 2000);
+        grabbed.vy = clamp((e.clientY - lastY) / dt, 2000);
+      }
+      lastX = e.clientX; lastY = e.clientY; lastT = e.timeStamp;
+      e.preventDefault();
+      return;
     }
-    lastX = e.clientX; lastY = e.clientY; lastT = e.timeStamp;
-    e.preventDefault();
+    if (monkeyTouch) monkeyX = e.clientX; // horizontal reserved via touch-action: pan-y
   }, { passive: false });
 
   function release() {
+    monkeyTouch = false;
     if (!grabbed) return;
     grabbed.av += clamp(grabbed.vx, 1500) * 0.4; // extra spin from the throw
     grabbed.held = false;
@@ -192,12 +207,16 @@
 
   var monkeyW = 88, monkeyX = window.innerWidth / 2, score = 0, total = 0;
   var leftHeld = false, rightHeld = false, shiftHeld = false, chompUntil = 0;
+  var monkeyTouch = false;
+  var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
 
   function syncMonkey() {
     if (!monkey) return;
     var on = value > 0;
     monkey.style.display = on ? 'block' : 'none';
     scoreEl.style.display = on ? 'block' : 'none';
+    // on touch, reserve horizontal drags for sliding the head (vertical still scrolls)
+    if (isTouch) document.body.style.touchAction = on ? 'pan-y' : '';
   }
   function renderScore() { scoreEl.textContent = '🍌 ' + score + ' / ' + total; }
   renderScore();
