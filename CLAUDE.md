@@ -7,40 +7,56 @@ Static site for the Fried Bananas jazz/blues band. Restored from a 2021 WordPres
 A simple 5-page band site:
 
 - **Home** (`site/index.html`) — landing page with band photos and nav
-- **About** (`site/about/index.html`) — band bio
+- **About** (`site/about/index.html`) — band bio + history; content in `about.md`
 - **Music** (`site/music/index.html`) — two Bandcamp album embeds with Dropbox fallback links
 - **EPK** (`site/epk/index.html`) — electronic press kit
-- **Contact** (`site/contact/index.html`) — contact info (the WordPress contact form is broken; see issue #2)
+- **Contact** (`site/contact/index.html`) — ways to reach Josh & Shawn; content in `contact.md` (the old WordPress contact form was removed)
 
 ## Deployment
 
-**Cloudflare Pages** — push to `main` → auto-deploys. No build command. Output directory: `site/`.
+**Cloudflare Pages** — push to `main` → auto-deploys. No build command. Output directory: `site/`. (It's a *Pages* project, not a Worker — a Worker won't auto-deploy from git.)
+
+## Editable content = markdown, fetched client-side
+
+Non-code text lives in `.md` files loaded at page load via `marked.js` (CDN), so edits don't require touching HTML:
+
+- **About** → `site/about/about.md` (photo stays hardcoded with `float:left` so text wraps it)
+- **Contact** → `site/contact/contact.md`
+- **Music intro** → `site/music/intro.md`
+
+All three pages patch parsed links to open in a new tab (DOM walk after `marked.parse`, not a custom renderer — the marked v5+ renderer API broke that).
 
 ## Music page
 
-The music page (`site/music/index.html`) is rebuilt from `work/build-bc.py` — do not hand-edit the HTML, edit the script and run it.
+`site/music/index.html` is **generated** by `work/build-bc.py` — edit the script and re-run it, don't hand-edit the HTML. Albums on Bandcamp (shawnhershey.bandcamp.com): Montreal `3311730543`, Albany `234184643`. Dropbox backup links + the player `bgcol` are in the `ALBUMS`/`STYLE` sections of that script.
 
-The intro paragraph is editable without touching code: edit `site/music/intro.md` and push. It's fetched client-side at page load via `marked.js`.
+## Theme / styling
 
-Albums on Bandcamp (shawnhershey.bandcamp.com):
-- Montreal: album ID `3311730543`
-- Albany: album ID `234184643`
+Uses the **Adament** WordPress theme, recovered as static assets in `site/wp-content/themes/Adament/`. Don't delete or restructure it — every page links to it.
 
-Dropbox backup links (MP3s for download) are in `work/build-bc.py` in the `ALBUMS` list.
+**Vintage dark theme:** site-wide overrides are appended to `site/wp-content/themes/Adament/css/custom-colors.css` (loads last, so it wins). Brown page (`#2b241d`), cream text, gold content links; the header/footer bars stay tan (`#e4d89a`) because the logo/nav are dark. `#content` and the `#bottom` spacer are made transparent so the brown shows through. Sticky-footer rules keep the footer at the viewport bottom on short pages.
 
-## Theme
+Photos are in `site/wp-content/uploads/2014/08/`. Original broken people-photos were external and aren't recoverable.
 
-The site uses the **Adament** WordPress theme, recovered as static assets in `site/wp-content/themes/Adament/`. Do not delete or restructure that directory — all pages link to it.
+## ⚠️ Cache-busting convention (important — there's no build step)
 
-Photos are in `site/wp-content/uploads/2014/08/`. The broken people photos from the original site are not recoverable (they were hosted externally).
+`custom-colors.css` and `bananas.js` are referenced with a `?v=N` query string on **all 5 pages and in `work/build-bc.py`**. When you edit either file, **bump `N` everywhere** (they're plain static files with no hashing, so browsers/Cloudflare will otherwise serve the stale copy). Quick way: a one-liner that string-replaces `?v=OLD`→`?v=NEW` across those 6 files.
+
+## Banana game 🍌
+
+An easter-egg toy, all in `site/wp-content/themes/Adament/js/bananas.js` (included on every page):
+
+- A dimmed slider centered in the footer (banana knob) sets the per-second probability a banana drops. Default 0.
+- Bananas fall big & slow with a gentle spin; grab/drag/throw them (permissive radius).
+- A catcher at the bottom — randomly **Josh or Shawn's head** — moves with ← / → (hold **Shift** = warp speed) on desktop, or drag on touch. Scores `eaten / total`; the head grows 2% per catch and shrinks 5% per miss (uncapped, by design).
+- Head cutouts: `site/wp-content/uploads/heads/{josh,shawn}.png`. `work/cutout.py` removes a near-white background (stdlib flood-fill; Pillow won't build here) and `work/crop_alpha.py` crops to the alpha bounds so heads render the same size. To add a face: get a transparent PNG (or run `cutout.py` on a white-background one), drop it in `heads/`, add it to the `CATCHERS` array, bump `bananas.js` `?v=`.
 
 ## What's NOT here
 
-- Audio files — all tracks are on Bandcamp (and Dropbox as backup). Never commit MP3s or WAVs.
-- WordPress PHP — the site is fully static; no server-side code runs.
-- The old `mirror.py` / `fixlinks.py` recovery scripts are deleted (work is done).
+- Audio files — tracks live on Bandcamp (+ Dropbox backup). Never commit MP3s/WAVs (gitignored, along with `__pycache__`).
+- WordPress PHP / server code — the site is fully static.
+- The one-time recovery scripts (`mirror.py`/`fixlinks.py`) — deleted; work is done.
 
-## Open issues
+## Open items
 
-- **#2** Contact form — replace with direct contact info for Josh and Shawn
-- **#3** Band status — add a note about the current state of the band
+- **#3** Band status — largely addressed on the About page ("mostly retired…"); close/confirm if satisfied.
