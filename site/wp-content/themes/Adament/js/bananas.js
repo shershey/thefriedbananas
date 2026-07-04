@@ -62,6 +62,7 @@
     value = Math.max(0, Math.min(1, v));
     if (prev === 0 && value > 0) { // fresh game
       score = 0; total = 0; catcherScale = 1;
+      monkeyX = window.innerWidth / 2 + 130; // clear of the slider
       if (typeof renderScore === 'function') renderScore();
       if (typeof pickCatcher === 'function') pickCatcher();
     }
@@ -134,6 +135,11 @@
   function insideSlider(e) {
     return e.target && e.target.closest && e.target.closest('#banana-ctrl');
   }
+  function onHead(px, py) {
+    var hwid = monkeyW * catcherScale, hhei = 104 * catcherScale;
+    return px > monkeyX - hwid / 2 && px < monkeyX + hwid / 2
+        && py > window.innerHeight - hhei;
+  }
 
   window.addEventListener('pointerdown', function (e) {
     var b = grabAt(e.clientX, e.clientY);
@@ -147,10 +153,15 @@
       e.stopPropagation();
       return;
     }
-    // touch: drag anywhere (except the slider) to slide the catcher
-    if (e.pointerType === 'touch' && value > 0 && !insideSlider(e)) {
-      monkeyTouch = true;
-      monkeyX = e.clientX;
+    // touch controls (mobile)
+    if (e.pointerType === 'touch' && value > 0) {
+      if (onHead(e.clientX, e.clientY)) {        // grabbing the head wins over the slider
+        monkeyTouch = true; monkeyX = e.clientX;
+        e.preventDefault(); e.stopPropagation();
+        return;
+      }
+      if (insideSlider(e)) return;               // let the slider handle its own touch
+      monkeyTouch = true; monkeyX = e.clientX;    // drag elsewhere to slide the head
     }
   }, true);
 
@@ -209,7 +220,8 @@
   }
   pickCatcher();
 
-  var monkeyW = 88, monkeyX = window.innerWidth / 2, score = 0, total = 0;
+  var monkeyW = 88, score = 0, total = 0;
+  var monkeyX = window.innerWidth / 2 + 130; // start to the right of the slider
   var catcherScale = 1; // grows as the head eats bananas
   var leftHeld = false, rightHeld = false, shiftHeld = false, chompUntil = 0;
   var monkeyTouch = false;
