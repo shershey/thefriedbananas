@@ -103,13 +103,16 @@
     el.style.fontSize = size + 'px';
     sky.appendChild(el);
     var dir = Math.random() < 0.5 ? -1 : 1;
+    var pad = size * 0.18;                       // room for the spinning corners
+    var span = Math.max(0, window.innerWidth - size - 2 * pad);
     var b = {
       el: el, size: size,
-      x: Math.random() * window.innerWidth, y: -size - 20,
+      x: pad + Math.random() * span, y: -size - 20, // spawn fully on-screen
       vx: (Math.random() - 0.5) * 30, vy: 12 + Math.random() * 18, // slow drop
       ang: Math.random() * 360, av: dir * (40 + Math.random() * 90) // always visibly spinning
     };
     b.held = false;
+    b.free = true; // never grabbed — kept within the viewport as it falls
     bananas.push(b);
     total++;
     if (typeof renderScore === 'function') renderScore();
@@ -144,7 +147,7 @@
   window.addEventListener('pointerdown', function (e) {
     var b = grabAt(e.clientX, e.clientY);
     if (b) {                        // grab a banana
-      grabbed = b; b.held = true;
+      grabbed = b; b.held = true; b.free = false; // now throwable off-screen
       offX = e.clientX - b.x; offY = e.clientY - b.y;
       lastX = e.clientX; lastY = e.clientY; lastT = e.timeStamp;
       b.vx = b.vy = 0;
@@ -274,6 +277,13 @@
         b.vy += G * dt;
         b.x += b.vx * dt;
         b.y += b.vy * dt;
+      }
+      if (b.free) {                  // keep un-grabbed bananas fully in view
+        var m = b.size * 0.18;
+        var lo = m, hi = window.innerWidth - b.size - m;
+        if (hi < lo) hi = lo;
+        if (b.x < lo) { b.x = lo; b.vx = Math.abs(b.vx); }
+        else if (b.x > hi) { b.x = hi; b.vx = -Math.abs(b.vx); }
       }
       b.ang += b.av * dt;
       b.el.style.transform = 'translate(' + b.x + 'px,' + b.y + 'px) rotate(' + b.ang + 'deg)';
